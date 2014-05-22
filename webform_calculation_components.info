@@ -1,0 +1,13 @@
+name = Webform Calculation Components
+description = Provides new components fields to perform basic arithmetic operations.
+core = 7.x
+package = "Webform"
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "webform_calculation_components"
+dependencies[] = webform
+datestamp = "1397496124"
+files[] = webform_calculation_components.module
+files[] = components/wb_calc_number.inc
+files[] = components/wb_calc_hidden.inc
+;configure = admin/config/content/webform-calc-component
