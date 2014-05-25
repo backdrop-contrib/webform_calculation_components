@@ -198,8 +198,8 @@ function _webform_render_wb_calc_number($component, $value = NULL, $filter = TRU
       'title',
       'description',
       'field_prefix',
-      'field_suffix'
-      ),
+      'field_suffix',
+    ),
   );
 
   if ($component['extra']['placeholder']) {
@@ -268,10 +268,10 @@ function _webform_edit_validate_wb_calc_number($element, &$form_state) {
     form_error($element, t('%value is not a valid webform calculation number.', array('%value' => trim($element['#value']))));
   }
   else {
-  // Set the selected number of decimals of the webform calculation number.
+    // Set the selected number of decimals of the webform calculation number.
     $wb_calc_number = round($matches[0], $decimals);
     $formatted_wb_calc_number = sprintf('%.0' . $decimals . 'f', $wb_calc_number);
-  // Update the value of this element so the field can be validated.
+    // Update the value of this element so the field can be validated.
     form_set_value($element, array($formatted_wb_calc_number), $form_state);
   }
 }
@@ -289,7 +289,7 @@ function _webform_display_wb_calc_number($component, $value, $format = 'html') {
     '#field_suffix' => $component['extra']['field_suffix'],
     '#format' => $format,
     '#value' => isset($value[0]) ? $value[0] : '',
-    '#translatable' => array('title', 'field_prefix', 'field_suffix')
+    '#translatable' => array('title', 'field_prefix', 'field_suffix'),
   );
 }
 
@@ -333,7 +333,9 @@ function _webform_analysis_wb_calc_number($component, $sids = array()) {
   $rows[0] = array(t('Left Blank'), ($submissions - $nonblanks));
   $rows[1] = array(t('User entered value'), $nonblanks);
 
-  $other[] = array(t('Average submission length in words (ex blanks)'), ($nonblanks != 0 ? number_format($wordcount / $nonblanks, 2) : '0'));
+  $other[] = array(
+    t('Average submission length in words (ex blanks)'),
+    ($nonblanks != 0 ? number_format($wordcount / $nonblanks, 2) : '0'));
 
   return array(
     'table_rows' => $rows,
