@@ -294,7 +294,7 @@ function webform_calculation_components_number_ajax_callback($form, $form_state)
   $operation_data = array();
 
   if (isset($form_state['triggering_element']['#parents']) && is_array($form_state['triggering_element']['#parents'])) {
-    // The last element of the array parents is the triggering component form key.
+    // The array parents last element is the triggering component form key.
     $form_key_index = count($form_state['triggering_element']['#parents']) - 1;
     $triggering_comp_form_key = $form_state['triggering_element']['#parents'][$form_key_index];
     if (isset($form['calc_operation_components']['#value'][$triggering_comp_form_key]['operand_field_path'])) {
@@ -325,7 +325,7 @@ function webform_calculation_components_number_ajax_callback($form, $form_state)
     'webformOperationDataArray' => $operation_data,
   );
 
-  // And finally, we will return all of our commands to the system to be executed.
+  // And finally, we will return all our commands to the system to be executed.
   return array('#type' => 'ajax', '#commands' => $commands);
 }
 /**
@@ -370,7 +370,7 @@ function webform_calculation_components_hidden_ajax_callback($form, $form_state)
           break;
         }
       }
-      // Check if the selected choice is the one that triggered the AJAX callback.
+      // Check if the select choice is the one that triggered the AJAX callback.
       if (!in_array($form_state['triggering_element']['#value'], $select_field_choices, TRUE)) {
         return;
       }
@@ -409,6 +409,6 @@ function webform_calculation_components_hidden_ajax_callback($form, $form_state)
     'webformOperationDataArray' => $operation_data,
   );
 
-  // And finally, we will return all of our commands to the system to be executed.
+  // And finally, we will return all our commands to the system to be executed.
   return array('#type' => 'ajax', '#commands' => $commands);
 }
