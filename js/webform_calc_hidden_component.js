@@ -52,5 +52,5 @@
 // console.log("operand_ids > %o",operand_ids);
 // console.log("operation > %o",operation);
 // console.log("result_id > %o",$(result_id).val());
-	};
+    };
 }(jQuery, Drupal));

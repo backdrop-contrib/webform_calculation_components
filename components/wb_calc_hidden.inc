@@ -24,8 +24,8 @@ function _webform_defaults_wb_calc_hidden() {
       'select_field' => '',
       'select_field_choices' => '',
       'result_field' => '',
-      'attributes' => array()
-    )
+      'attributes' => array(),
+    ),
   );
   return $default_component_values;
 }
@@ -36,8 +36,8 @@ function _webform_defaults_wb_calc_hidden() {
 function _webform_theme_wb_calc_hidden() {
   return array(
     'webform_display_wb_calc_hidden' => array(
-      'render element' => 'element'
-    )
+      'render element' => 'element',
+    ),
   );
 }
 
@@ -67,7 +67,7 @@ function _webform_edit_wb_calc_hidden($component) {
     '#description' => t('The default value of the field.') . ' ' . theme('webform_token_help'),
     '#cols' => 60,
     '#rows' => 5,
-    '#weight' => 0
+    '#weight' => 0,
   );
 
   $form['display']['calculation_hidden_type'] = array(
@@ -79,7 +79,7 @@ function _webform_edit_wb_calc_hidden($component) {
     '#title' => t('Webform hidden calculation type'),
     '#description' => t('Both types of webform hidden calculation fields are not shown to end-users. Using a <em>Secure value</em> allows the use of <em>all tokens</em>, even for anonymous users.'),
     '#default_value' => $component['extra']['calculation_hidden_type'],
-    '#parents' => array('extra', 'calculation_hidden_type')
+    '#parents' => array('extra', 'calculation_hidden_type'),
   );
 
   $form['extra']['operand_field'] = array(
@@ -90,7 +90,7 @@ function _webform_edit_wb_calc_hidden($component) {
     '#size' => 2,
     '#options' => $available_numeric_fields,
     '#description' => t('Select the numeric component or components as operand fields. Hold Control key to select more than one.'),
-    '#parents' => array('extra', 'operand_field')
+    '#parents' => array('extra', 'operand_field'),
   );
 
   $form['extra']['operation_type'] = array(
@@ -103,10 +103,10 @@ function _webform_edit_wb_calc_hidden($component) {
       'multiplication' => t('Multiplication') . ' (*)',
       'division' => t('Division') . ' (/)',
       'percentage' => t('Percentage'),
-      'modulo' => t('Modulo')
+      'modulo' => t('Modulo'),
     ),
     '#description' => t('E.g. Addition, Multiplication etc.'),
-    '#parents' => array('extra', 'operation_type')
+    '#parents' => array('extra', 'operation_type'),
   );
 
   $form['extra']['select_field'] = array(
@@ -115,7 +115,7 @@ function _webform_edit_wb_calc_hidden($component) {
     '#title' => t('Select field for calculation'),
     '#options' => $available_select_fields,
     '#description' => t('Choose a select component to perform the calculation.'),
-    '#parents' => array('extra', 'select_field')
+    '#parents' => array('extra', 'select_field'),
   );
 
   $form['extra']['select_field_choices'] = array(
@@ -125,7 +125,7 @@ function _webform_edit_wb_calc_hidden($component) {
     '#options' => $available_select_fields_choices,
     '#multiple' => TRUE,
     '#description' => t('Choose which values of the select field will enable the calculation. Hold Control key to select more than one.'),
-    '#parents' => array('extra', 'select_field_choices')
+    '#parents' => array('extra', 'select_field_choices'),
   );
 
   $form['extra']['result_field'] = array(
@@ -134,7 +134,7 @@ function _webform_edit_wb_calc_hidden($component) {
     '#title' => t('Result field'),
     '#options' => $available_numeric_fields,
     '#description' => t('Select the numeric component as the result field or target of the operation.'),
-    '#parents' => array('extra', 'result_field')
+    '#parents' => array('extra', 'result_field'),
   );
 
   return $form;
@@ -144,7 +144,7 @@ function _webform_edit_wb_calc_hidden($component) {
  * Element validation callback. Ensure keys are not duplicated.
  */
 function _webform_edit_validate_wb_calc_hidden($element, &$form_state) {
-// @to-do validate that select field choices coincide with the select field.
+  // @to-do validate that select field choices coincide with the select field.
 }
 
 /**
@@ -161,7 +161,7 @@ function _webform_render_wb_calc_hidden($component, $value = NULL, $filter = TRU
   $element = array(
     '#title' => $filter ? NULL : $component['name'],
     '#weight' => $component['weight'],
-    '#translatable' => array('title')
+    '#translatable' => array('title'),
   );
 
   if ($component['extra']['calculation_hidden_type'] == 'value') {
@@ -219,7 +219,7 @@ function _webform_display_wb_calc_hidden($component, $value, $format = 'html') {
     '#format' => $format,
     '#theme' => 'webform_display_wb_calc_hidden',
     '#theme_wrappers' => $format == 'text' ? array('webform_element_text') : array('webform_element'),
-    '#translatable' => array('title')
+    '#translatable' => array('title'),
   );
 
   return $element;
