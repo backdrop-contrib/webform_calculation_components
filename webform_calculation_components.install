@@ -1,10 +1,10 @@
 <?php
 /**
  * @file
- *
+ * Webform calculation components install and uninstall procedures.
  */
 
 /*
  * Implements hook_uninstall().
- *
  */
+

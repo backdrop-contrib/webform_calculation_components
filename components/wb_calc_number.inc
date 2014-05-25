@@ -1,13 +1,12 @@
 <?php
-
 /**
  * @file
  * Webform module calculation number component.
  */
 
 if (!defined('MAX_DECIMALS')) {
-    define('MAX_DECIMALS', 31);
-  }
+  define('MAX_DECIMALS', 31);
+}
 
 /**
  * Implements _webform_defaults_component().
@@ -35,8 +34,8 @@ function _webform_defaults_wb_calc_number() {
       'analysis' => FALSE,
       'decimals' => 0,
       'operation_type' => '',
-      'result_field' => '',
-    ),
+      'result_field' => ''
+    )
   );
 }
 
@@ -47,7 +46,7 @@ function _webform_theme_wb_calc_number() {
   return array(
     'webform_display_wb_calc_number' => array(
       'render element' => 'element',
-      //'file' => '/components/wb_calc_number.inc',
+// 'file' => '/components/wb_calc_number.inc',
     ),
   );
 }
@@ -60,8 +59,7 @@ function _webform_edit_wb_calc_number($component) {
 
   $webformnode = node_load($component['nid']);
   $available_numeric_fields = array();
-  $available_select_fields = array();
-  foreach ($webformnode->webform['components'] as $key => $component_element) {
+  foreach ($webformnode->webform['components'] as $component_element) {
     if ($component_element['type'] == 'number' || $component_element['type'] == 'wb_calc_number') {
       $available_numeric_fields[$component_element['form_key']] = $component_element['name'];
     }
@@ -74,7 +72,7 @@ function _webform_edit_wb_calc_number($component) {
     '#description' => t('The default value of the webform calculation number field.') . ' ' . theme('webform_token_help'),
     '#size' => 60,
     '#maxlength' => 1024,
-    '#weight' => 0,
+    '#weight' => 0
   );
   $form['display']['width'] = array(
     '#type' => 'textfield',
@@ -84,7 +82,7 @@ function _webform_edit_wb_calc_number($component) {
     '#size' => 5,
     '#maxlength' => 10,
     '#weight' => 0,
-    '#parents' => array('extra', 'width'),
+    '#parents' => array('extra', 'width')
   );
   $form['display']['placeholder'] = array(
     '#type' => 'textfield',
@@ -92,7 +90,7 @@ function _webform_edit_wb_calc_number($component) {
     '#default_value' => $component['extra']['placeholder'],
     '#description' => t('The placeholder will be shown in the field until the user starts entering a value.'),
     '#weight' => 1,
-    '#parents' => array('extra', 'placeholder'),
+    '#parents' => array('extra', 'placeholder')
   );
   $form['display']['field_prefix'] = array(
     '#type' => 'textfield',
@@ -102,7 +100,7 @@ function _webform_edit_wb_calc_number($component) {
     '#size' => 20,
     '#maxlength' => 127,
     '#weight' => 2.1,
-    '#parents' => array('extra', 'field_prefix'),
+    '#parents' => array('extra', 'field_prefix')
   );
   $form['display']['field_suffix'] = array(
     '#type' => 'textfield',
@@ -112,7 +110,7 @@ function _webform_edit_wb_calc_number($component) {
     '#size' => 20,
     '#maxlength' => 127,
     '#weight' => 2.2,
-    '#parents' => array('extra', 'field_suffix'),
+    '#parents' => array('extra', 'field_suffix')
   );
   $form['display']['disabled'] = array(
     '#type' => 'checkbox',
@@ -121,7 +119,7 @@ function _webform_edit_wb_calc_number($component) {
     '#description' => t('Make this field non-editable. Useful for setting an unchangeable default value.'),
     '#weight' => 11,
     '#default_value' => $component['extra']['disabled'],
-    '#parents' => array('extra', 'disabled'),
+    '#parents' => array('extra', 'disabled')
   );
   $form['validation']['unique'] = array(
     '#type' => 'checkbox',
@@ -130,7 +128,7 @@ function _webform_edit_wb_calc_number($component) {
     '#description' => t('Check that all entered values for this field are unique. The same value is not allowed to be used twice.'),
     '#weight' => 1,
     '#default_value' => $component['extra']['unique'],
-    '#parents' => array('extra', 'unique'),
+    '#parents' => array('extra', 'unique')
   );
   $form['validation']['maxlength'] = array(
     '#type' => 'textfield',
@@ -140,7 +138,7 @@ function _webform_edit_wb_calc_number($component) {
     '#size' => 5,
     '#maxlength' => 10,
     '#weight' => 2,
-    '#parents' => array('extra', 'maxlength'),
+    '#parents' => array('extra', 'maxlength')
   );
   $form['extra']['decimals'] = array(
     '#type' => 'textfield',
@@ -149,8 +147,8 @@ function _webform_edit_wb_calc_number($component) {
     '#description' => t('Number of decimals of the calcaulation field. Minimun: 0 (integer), Maximum: @max_decimals.', array('@max_decimals' => MAX_DECIMALS)),
     '#size' => 5,
     '#maxlength' => 3,
-    '#parents' => array('extra', 'decimals'),
-    );
+    '#parents' => array('extra', 'decimals')
+  );
   $form['extra']['operation_type'] = array(
     '#type' => 'select',
     '#title' => t('Operation'),
@@ -161,19 +159,19 @@ function _webform_edit_wb_calc_number($component) {
       'multiplication' => t('Multiplication') . ' (*)',
       'division' => t('Division') . ' (/)',
       'percentage' => t('Percentage'),
-      'modulo' => t('Modulo'),
-      ),
+      'modulo' => t('Modulo')
+    ),
     '#description' => t('E.g. Addition, Multiplication etc.'),
-    '#parents' => array('extra', 'operation_type'),
-    );
+    '#parents' => array('extra', 'operation_type')
+  );
   $form['extra']['result_field'] = array(
     '#type' => 'select',
     '#default_value' => $component['extra']['result_field'],
     '#title' => t('Result field'),
     '#options' => $available_numeric_fields,
     '#description' => t('Select the numeric component as the result field or target of the operation.'),
-    '#parents' => array('extra', 'result_field'),
-    );
+    '#parents' => array('extra', 'result_field')
+  );
 
   return $form;
 }
@@ -196,7 +194,7 @@ function _webform_render_wb_calc_number($component, $value = NULL, $filter = TRU
     '#description' => $filter ? webform_filter_descriptions($component['extra']['description'], $node) : $component['extra']['description'],
     '#attributes' => $component['extra']['attributes'],
     '#theme_wrappers' => array('webform_element'),
-    '#translatable' => array('title', 'description', 'field_prefix', 'field_suffix'),
+    '#translatable' => array('title', 'description', 'field_prefix', 'field_suffix')
   );
 
   if ($component['extra']['placeholder']) {
@@ -233,10 +231,10 @@ function _webform_render_wb_calc_number($component, $value = NULL, $filter = TRU
     $element['#element_validate'] = array('_webform_edit_validate_wb_calc_number');
   }
   if ($component['extra']['operation_type'] == 'value') {
-    $element['#value'] = $default_value;
+    $element['#value'] = $element['#default_value'];
   }
   if ($component['extra']['result_field'] == 'value') {
-    $element['#value'] = $default_value;
+    $element['#value'] = $element['#default_value'];
   }
 
   return $element;
@@ -286,7 +284,7 @@ function _webform_display_wb_calc_number($component, $value, $format = 'html') {
     '#field_suffix' => $component['extra']['field_suffix'],
     '#format' => $format,
     '#value' => isset($value[0]) ? $value[0] : '',
-    '#translatable' => array('title', 'field_prefix', 'field_suffix'),
+    '#translatable' => array('title', 'field_prefix', 'field_suffix')
   );
 }
 
@@ -330,7 +328,7 @@ function _webform_analysis_wb_calc_number($component, $sids = array()) {
   $rows[0] = array(t('Left Blank'), ($submissions - $nonblanks));
   $rows[1] = array(t('User entered value'), $nonblanks);
 
-  $other[] = array(t('Average submission length in words (ex blanks)'), ($nonblanks != 0 ? number_format($wordcount/$nonblanks, 2) : '0'));
+  $other[] = array(t('Average submission length in words (ex blanks)'), ($nonblanks != 0 ? number_format($wordcount / $nonblanks, 2) : '0'));
 
   return array(
     'table_rows' => $rows,

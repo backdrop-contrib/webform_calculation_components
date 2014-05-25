@@ -3,9 +3,6 @@
  * @file
  * Provides functions and callbacks for creating new webform components
  * types that allow calculations.
- *
- * @author Anthony Goode
- *
  */
 
  /**
@@ -14,11 +11,11 @@
 function webform_calculation_components_webform_component_info() {
   $components = array();
   $components['wb_calc_number'] = array(
-  'label' => t('Calculation - number'),
+    'label' => t('Calculation - number'),
     'description' => t('Numeric field that allows to perform calculations on a selected result field.'),
     'features' => array(
-      'csv' => TRUE,
-      'email' => TRUE,
+    'csv' => TRUE,
+    'email' => TRUE,
       'required' => TRUE,
       'description' => TRUE,
       'email_address' => FALSE,
@@ -32,11 +29,11 @@ function webform_calculation_components_webform_component_info() {
       'attachment' => FALSE,
       'wrapper_classes' => TRUE,
       'css_classes' => TRUE,
-      ),
-    'file' => '/components/wb_calc_number.inc',
-    );
+    ),
+    'file' => '/components/wb_calc_number.inc'
+  );
   $components['wb_calc_hidden'] = array(
-  'label' => t('Calculation - hidden'),
+    'label' => t('Calculation - hidden'),
     'description' => t('Hidden field that allows to perform calculations using other fields.'),
     'features' => array(
       'csv' => TRUE,
@@ -53,91 +50,95 @@ function webform_calculation_components_webform_component_info() {
       'attachment' => FALSE,
       'wrapper_classes' => TRUE,
       'css_classes' => TRUE,
-      ),
-    'file' => '/components/wb_calc_hidden.inc',
-    );
+    ),
+    'file' => '/components/wb_calc_hidden.inc'
+  );
   return $components;
 }
 
 /**
- * Implements hook_form_alter() to insert the #ajax element
+ * Implements hook_form_alter().
  * @ingroup forms
  */
 function webform_calculation_components_form_alter(&$form, $form_state, $form_id) {
-  // Check if is a webform form
+  // Check if is a webform form.
   if (strpos($form_id, 'webform_client_form_') === 0 && (isset($form['#node']->webform['components']))) {
-    // Check if it has a webform calculation number component
+    // Check if it has a webform calculation number component.
     foreach ($form['#node']->webform['components'] as $component) {
       if ($component['type'] == 'wb_calc_number') {
         if (isset($form['#attached']['js'])) {
           $webform_calc_number_js = drupal_get_path('module', 'webform_calculation_components') . '/js/webform_calc_number_component.js';
           if (!in_array($webform_calc_number_js, $form['#attached']['js'])) {
               $form['#attached']['js'][] = $webform_calc_number_js;
-            }
+          }
         }
         if (isset($form['submitted'])) {
-          // An array of tree paths is created
+          // An array of tree paths is created.
           $wb_number_calc_tree_paths = array();
-          // Each tree path belongs to a component. The key indicates which one
+          // Each tree path belongs to a component. The key indicates which one.
           $wb_number_calc_tree_paths[$component['form_key']] = _webform_calculation_components_build_tree_path($form['#node']->webform['components'], array($component['form_key']), $component['pid']);
-          //insert #prefix, #suffix and #ajax
+          // Insert #prefix, #suffix and #ajax.
           $ajax_attributes = array(
             '#prefix' => '<div id="cid-' . $component['cid'] . '_component_element_wrapper">',
             '#suffix' => '</div>',
             '#ajax' => array(
-              'callback' => "webform_calculation_number_ajax_callback",
+              'callback' => "webform_calculation_components_number_ajax_callback",
               'wrapper' => 'cid-' . $component['cid'] . '_component_element_wrapper',
               'event' => 'blur',
-              )
-            );
+            )
+          );
           _webform_calculation_components_insert_new_attribute($form['submitted'], $wb_number_calc_tree_paths[$component['form_key']], $ajax_attributes);
-          // Store the data for the operations in the form array
+          // Store the data for the operations in the form array.
           $calc_operation_components = _webform_calculation_components_get_operation_data($form['#node']->webform['components'], $component['cid']);
           $form['calc_operation_components']['#type'] = 'value';
-          // We distinguish every element of the calc_operation_components array by
-          // the select field not by the wb_calc_hidden form key, because later
-          // in the AJAX callback fucntion we check the triggering element.
+          /* We distinguish every element of the calc_operation_components
+           * array by the select field not by the wb_calc_hidden form key,
+           * because later in the AJAX callback function we check the triggering
+           * element.
+           */
           $form['calc_operation_components']['#value'][$component['form_key']] = $calc_operation_components;
         }
       }
-      // Check if it has a calculation hidden component
+      // Check if it has a calculation hidden component.
       if ($component['type'] == 'wb_calc_hidden') {
         if (isset($form['#attached']['js'])) {
           $webform_calc_hidden_js = drupal_get_path('module', 'webform_calculation_components') . '/js/webform_calc_hidden_component.js';
           if (!in_array($webform_calc_hidden_js, $form['#attached']['js'])) {
               $form['#attached']['js'][] = $webform_calc_hidden_js;
-            }
+          }
         }
         if (isset($form['submitted'])) {
-          // An array of tree paths is created
+          // An array of tree paths is created.
           $select_field_pid = _webform_calculation_components_get_pid($form['#node']->webform['components'], $component['extra']['select_field']);
           $wb_hidden_select_field_tree_paths = array();
-          // Each tree path belongs to a component. The key indicates which one
+          // Each tree path belongs to a component. The key indicates which one.
           $wb_hidden_select_field_tree_paths[$component['form_key']] = _webform_calculation_components_build_tree_path($form['#node']->webform['components'], array($component['extra']['select_field']), $select_field_pid);
-          // Insert #prefix, #suffix and #ajax
+          // Insert #prefix, #suffix and #ajax.
           $ajax_attributes = array(
             '#prefix' => '<div id="cid-' . $component['cid'] . '_component_element_wrapper">',
             '#suffix' => '</div>',
             '#ajax' => array(
-              'callback' => "webform_calculation_hidden_ajax_callback",
+              'callback' => "webform_calculation_components_hidden_ajax_callback",
               'wrapper' => 'cid-' . $component['cid'] . '_component_element_wrapper',
               'event' => 'change',
-              ),
-            );
+            )
+          );
           _webform_calculation_components_insert_new_attribute($form['submitted'], $wb_hidden_select_field_tree_paths[$component['form_key']], $ajax_attributes);
-          // Store the data for the operations in the form array
+          // Store the data for the operations in the form array.
           $calc_operation_components = _webform_calculation_components_get_operation_data($form['#node']->webform['components'], $component['cid']);
           $form['calc_operation_components']['#type'] = 'value';
-          // We distinguish every element of the calc_operation_components array by
-          // the select field not by the wb_calc_hidden form key, because later
-          // in the AJAX callback fucntion we check the triggering element.
+          /* We distinguish every element of the calc_operation_components
+           * array by the select field not by the wb_calc_hidden form key,
+           * because later in the AJAX callback function we check the triggering
+           * element.
+           */
           $form['calc_operation_components']['#value'][$component['extra']['select_field']] = $calc_operation_components;
         }
       }
-      }
     }
-  //dpm($form, "form");
-  //dpm($form_state, "form state");
+  }
+  // dpm($form, "form");?
+  // dpm($form_state, "form state");?
 }
 
 /**
@@ -163,22 +164,22 @@ function webform_calculation_components_form_alter(&$form, $form_state, $form_id
  *   attributes.
  */
 function _webform_calculation_components_build_tree_path($components_tree, $tree_path, $wb_calc_comp_pid) {
-  // Return if there is not a fieldset parent
+  // Return if there is not a fieldset parent.
   if ($wb_calc_comp_pid == 0) {
     return $tree_path;
   }
-  // The highest branch of the tree path is stored
+  // The highest branch of the tree path is stored.
   $tree_path_first_index = (int)$wb_calc_comp_pid;
-  // We loop until the root is reached
+  // We loop until the root is reached.
   while ($tree_path_first_index != 0) {
-    // The parent fieldset is isolated in one array
-    $depth = array_unshift($tree_path, $components_tree[$tree_path_first_index]['form_key']);
+    // The parent fieldset is isolated in one array.
+    array_unshift($tree_path, $components_tree[$tree_path_first_index]['form_key']);
     $tree_path_first_index = (int)$components_tree[$tree_path_first_index]['pid'];
   }
   return $tree_path;
 }
 /**
- * This helper function insert new attributes in the argument array
+ * This helper function insert new attributes in the argument array.
  *
  * @param $form_submitted_array
  *   The submitted array where the components are stored.
@@ -194,21 +195,21 @@ function _webform_calculation_components_build_tree_path($components_tree, $tree
  *   It returns true if the new attributes have been inserted and false if not.
  */
 function _webform_calculation_components_insert_new_attribute(array &$form_submitted_array, array $tree_path, array $new_attributes) {
-    $aux = &$form_submitted_array;
-    foreach ($tree_path as $key) {
-        if (isset($aux[$key])) {
-            $aux = &$aux[$key];
-        }
-        else { // If the path is not correct return false
-            return FALSE;
-        }
+  $aux = &$form_submitted_array;
+  foreach ($tree_path as $key) {
+    if (isset($aux[$key])) {
+      $aux = &$aux[$key];
     }
-    if (is_array($aux) && isset($new_attributes)) {
-      foreach ($new_attributes as $new_attribute_key => $new_attribute_value) {
-        $aux[$new_attribute_key] = $new_attribute_value;
-      }
+    else { // If the path is not correct return false.
+      return FALSE;
     }
-    return TRUE;
+  }
+  if (is_array($aux) && isset($new_attributes)) {
+    foreach ($new_attributes as $new_attribute_key => $new_attribute_value) {
+      $aux[$new_attribute_key] = $new_attribute_value;
+    }
+  }
+  return TRUE;
 }
 /**
  * This helper function get the pid (Parent Id) of the calculation component.
@@ -224,7 +225,7 @@ function _webform_calculation_components_insert_new_attribute(array &$form_submi
  *   It returns the pid string.
  */
 function _webform_calculation_components_get_pid(array $components, $form_key) {
-  foreach ($components as $cid => $component) {
+  foreach ($components as $component) {
     if ($component['form_key'] == $form_key) {
       return $component['pid'];
     }
@@ -272,21 +273,24 @@ function _webform_calculation_components_get_operation_data($components, $wb_cal
 /**
  * Implements hook_ajax_callback() on webform select checkboxes change.
  */
-function webform_calculation_number_ajax_callback($form, $form_state) {
-  // First, we initialize our $commands array. This array will
-  // contain each of the commands we want to fire for our
-  // #AJAX callback:
+function webform_calculation_components_number_ajax_callback($form, $form_state) {
+  /* First, we initialize our $commands array. This array will
+   * contain each of the commands we want to fire for our
+   * #AJAX callback:
+   */
    $commands = array();
 
-  // Next, we create our insert function that will insert our updated content
-  // back into the page. To do this, we use the system provided
-  // ajax_command_html() function. We pass this function two values:
-  // 1) Our AJAX wrapper (that we defined as the #prefix and #suffix of our form element)
-  // 2) The rendered HTML that needs to be inserted into the wrapper in the page.
+  /* Next, we create our insert function that will insert our updated content
+   * back into the page. To do this, we use the system provided
+   * ajax_command_html() function. We pass this function two values:
+   * 1) Our AJAX wrapper (that we defined as the #prefix and #suffix of
+   * our form element).
+   * 2) The rendered HTML that needs to be inserted into the wrapper.
+   */
   $operation_data = array();
 
   if (isset($form_state['triggering_element']['#parents']) && is_array($form_state['triggering_element']['#parents'])) {
-    // The last element of the array parents is the triggering component form key
+  // The last element of the array parents is the triggering component form key.
     $form_key_index = sizeof($form_state['triggering_element']['#parents']) - 1;
     $triggering_comp_form_key = $form_state['triggering_element']['#parents'][$form_key_index];
     if (isset($form['calc_operation_components']['#value'][$triggering_comp_form_key]['operand_field_path'])) {
@@ -300,49 +304,58 @@ function webform_calculation_number_ajax_callback($form, $form_state) {
     }
   }
 
-   // Next, we will use the system provided ajax_command_alert() function as an example to show it's
-  // working:
-    //$commands[] = ajax_command_alert(t('ajax_command_alert() is working'));
-
-  // Next we will include a helper function that we will call ourselves in our JavaScript file:
+  /* Next, we will use the system provided ajax_command_alert() function as
+   * an example to show it's working:
+   * $commands[] = ajax_command_alert(t('ajax_command_alert() is working'));
+   *
+   * Next we will include a helper function that we will call ourselves in
+   * our JavaScript file.
+   */
   $commands[] = array(
-    // The command will be used in our JavaScript file (see next section)
+    // The command will be used in our JavaScript file (see next section).
     'command' => 'webformCalcNumberComponentAjaxCallback',
-    // We pass the value that the user selected in the select element to our
-    // JavaScript function:
+    /* We pass the value that the user selected in the select element to our
+     * JavaScript function.
+    */
 
     'webformOperationDataArray' => $operation_data,
     );
 
-  // And finally, we will return all of our commands to the system to be executed:
+// And finally, we will return all of our commands to the system to be executed.
   return array('#type' => 'ajax', '#commands' => $commands);
 }
 /**
  * Implements hook_ajax_callback() on webform select checkboxes change.
  */
-function webform_calculation_hidden_ajax_callback($form, $form_state) {
-  // First, we initialize our $commands array. This array will
-  // contain each of the commands we want to fire for our
-  // #AJAX callback:
+function webform_calculation_components_hidden_ajax_callback($form, $form_state) {
+  /* First, we initialize our $commands array. This array will
+   * contain each of the commands we want to fire for our
+   * #AJAX callback:
+   */
    $commands = array();
 
-  // Next, we create our insert function that will insert our updated content
-  // back into the page. To do this, we use the system provided
-  // ajax_command_html() function. We pass this function two values:
-  // 1) Our AJAX wrapper (that we defined as the #prefix and #suffix of our form element)
-  // 2) The rendered HTML that needs to be inserted into the wrapper in the page.
+  /* Next, we create our insert function that will insert our updated content
+   * back into the page. To do this, we use the system provided
+   * ajax_command_html() function. We pass this function two values:
+   * 1) Our AJAX wrapper (that we defined as the #prefix and #suffix of
+   * our form element).
+   * 2) The rendered HTML that needs to be inserted into the wrapper.
+   */
+
   $operation_data = array();
   if (isset($form_state['triggering_element']['#parents']) && is_array($form_state['triggering_element']['#parents'])) {
     $form_key_index = sizeof($form_state['triggering_element']['#parents']) - 1;
     $triggering_comp_form_key = $form_state['triggering_element']['#parents'][$form_key_index];
-    //$operation_data['debug_triggering_element'] = $form_state['triggering_element'];
+    // $operation_data['debug_triggering'] = $form_state['triggering_element'];?
     if (isset($form_state['triggering_element']['#type']) && $form_state['triggering_element']['#type'] == 'checkbox') {
       if ($triggering_comp_form_key == $form_state['triggering_element']['#value']) {
         $form_key_index--;
         $triggering_comp_form_key = $form_state['triggering_element']['#parents'][$form_key_index];
       }
     }
-    // Check if the select field (triggering component) is set to a selected choice. E.g. yes.
+    /* Check if the select field (triggering component) is set to a selected
+    * choice. E.g. yes.
+    */
     if (isset($form_state['complete form']['#node']->webform['components']) && isset($form_state['triggering_element']['#value'])) {
       $select_field_choices = array();
       foreach ($form_state['complete form']['#node']->webform['components'] as $component) {
@@ -351,12 +364,14 @@ function webform_calculation_hidden_ajax_callback($form, $form_state) {
           break;
         }
       }
-      // Check if the selected choice is the one that triggered the AJAX callback
+    // Check if the selected choice is the one that triggered the AJAX callback.
       if (!in_array($form_state['triggering_element']['#value'], $select_field_choices, TRUE)) {
         return;
       }
     }
-    // Check if there is an array for that triggering component in the calc_operation_components
+    /* Check if there is an array for that triggering component in the
+     * calc_operation_components.
+     */
     if (isset($form['calc_operation_components']['#value'][$triggering_comp_form_key]) ) {
       if (isset($form['calc_operation_components']['#value'][$triggering_comp_form_key]['operand_field_paths'])) {
         foreach ($form['calc_operation_components']['#value'][$triggering_comp_form_key]['operand_field_paths'] as $operand_field_path) {
@@ -372,21 +387,22 @@ function webform_calculation_hidden_ajax_callback($form, $form_state) {
     }
   }
 
-   // Next, we will use the system provided ajax_command_alert() function as an example to show it's
-  // working:
-    //$commands[] = ajax_command_alert(t('ajax_command_alert() is working'));
-
-  // Next we will include a helper function that we will call ourselves in our JavaScript file:
+  /* Next, we will use the system provided ajax_command_alert() function as
+   * an example to show it's working:
+   * $commands[] = ajax_command_alert(t('ajax_command_alert() is working'));
+   *
+   * Next we will include a helper function that we will call ourselves in
+   * our JavaScript file.
+   */
   $commands[] = array(
-    // The command will be used in our JavaScript file (see next section)
+    // The command will be used in our JavaScript file (see next section).
     'command' => 'webformCalcHiddenComponentAjaxCallback',
-    // We pass the value that the user selected in the select element to our
-    // JavaScript function:
-
+    /* We pass the value that the user selected in the select element to our
+     * JavaScript function.
+    */
     'webformOperationDataArray' => $operation_data,
     );
 
-  // And finally, we will return all of our commands to the system to be executed:
+// And finally, we will return all of our commands to the system to be executed.
   return array('#type' => 'ajax', '#commands' => $commands);
 }
-
