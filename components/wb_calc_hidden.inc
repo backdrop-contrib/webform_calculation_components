@@ -24,6 +24,7 @@ function _webform_defaults_wb_calc_hidden() {
       'select_field' => '',
       'select_field_choices' => '',
       'result_field' => '',
+      'cumulative_result' => '',
       'attributes' => array(),
     ),
   );
@@ -137,6 +138,18 @@ function _webform_edit_wb_calc_hidden($component) {
     '#parents' => array('extra', 'result_field'),
   );
 
+  $form['extra']['cumulative_result'] = array(
+    '#type' => 'select',
+    '#title' => t('Cumulative result'),
+    '#default_value' => $component['extra']['cumulative_result'],
+    '#options' => array(
+      'yes' => t('Yes'),
+      'no' => t('No'),
+    ),
+    '#description' => t('Whether the current value of the result field is included in the calculation or not.'),
+    '#parents' => array('extra', 'cumulative_result'),
+  );
+
   return $form;
 }
 
@@ -201,6 +214,11 @@ function _webform_render_wb_calc_hidden($component, $value = NULL, $filter = TRU
   }
 
   if ($component['extra']['result_field'] == 'value') {
+    $element['#type'] = 'value';
+    $element['#value'] = $default_value;
+  }
+
+  if ($component['extra']['cumulative_result'] == 'value') {
     $element['#type'] = 'value';
     $element['#value'] = $default_value;
   }
