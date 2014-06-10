@@ -1,8 +1,7 @@
 <?php
 /**
  * @file
- * This defines the webform helper callbacks for the webform component
- * calculation hidden.
+ * Defines the webform helper callbacks for the calculation hidden component.
  */
 
 /**

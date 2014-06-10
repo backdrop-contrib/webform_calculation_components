@@ -160,7 +160,7 @@ function webform_calculation_components_form_alter(&$form, $form_state, $form_id
  *   form keys that specifies the tree path. It will be used to insert the AJAX
  *   attributes.
  */
-function _webform_calculation_components_build_tree_path($components_tree, $tree_path, $wb_calc_comp_pid) {
+function _webform_calculation_components_build_tree_path(array $components_tree, array $tree_path, $wb_calc_comp_pid) {
   // Return if there is not a fieldset parent.
   if ($wb_calc_comp_pid == 0) {
     return $tree_path;
@@ -252,7 +252,7 @@ function _webform_calculation_components_get_pid(array $components, $form_key) {
  *   It returns the an array that contains the operand and result fields
  *   selectors (in an tree path array) and the operation to perform.
  */
-function _webform_calculation_components_get_operation_data($components, $wb_calc_component_cid) {
+function _webform_calculation_components_get_operation_data(array $components, $wb_calc_component_cid) {
   $calc_operation_components = array();
   if ($components[$wb_calc_component_cid]['type'] == 'wb_calc_number') {
     $calc_operation_components['operand_field_path'] = _webform_calculation_components_build_tree_path($components, array($components[$wb_calc_component_cid]['form_key']), $components[$wb_calc_component_cid]['pid']);
