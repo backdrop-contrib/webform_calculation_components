@@ -1,8 +1,7 @@
 <?php
 /**
  * @file
- * Provides functions and callbacks for creating new webform components
- * types that allow calculations.
+ * Provides functions and callbacks that allow calculations in webforms.
  */
 
  /**
@@ -58,6 +57,7 @@ function webform_calculation_components_webform_component_info() {
 
 /**
  * Implements hook_form_alter().
+ *
  * @ingroup forms
  */
 function webform_calculation_components_form_alter(&$form, $form_state, $form_id) {
@@ -148,11 +148,9 @@ function webform_calculation_components_form_alter(&$form, $form_state, $form_id
  *   The array of components in a tree shape taken from the webform node form
  *   array. It will be used to build up the path array to insert the AJAX
  *   attributes.
- *
  * @param array $tree_path
  *   An array with the cid (Component Id) of the current wb_calc component
  *   as the key and the current wb_calc component form key as the value.
- *
  * @param string $wb_calc_comp_pid
  *   The pid (Parent Id) of the wb_calc component that calls this
  *   function.
@@ -177,12 +175,12 @@ function _webform_calculation_components_build_tree_path($components_tree, $tree
   }
   return $tree_path;
 }
+
 /**
  * This helper function insert new attributes in the argument array.
  *
  * @param array $form_submitted_array
  *   The submitted array where the components are stored.
- *
  * @param array $tree_path
  *   The list of components forming a tree path to select the form element
  *   where we need to insert the new attribute.
@@ -211,13 +209,13 @@ function _webform_calculation_components_insert_new_attribute(array &$form_submi
   }
   return TRUE;
 }
+
 /**
  * This helper function get the pid (Parent Id) of the calculation component.
  *
  * @param array $components
  *   The array of components in a tree shape taken from the webform node form
  *   array.
- *
  * @param string $form_key
  *   The form key string to get the cid (Component Id), and then the pid.
  *
@@ -231,6 +229,7 @@ function _webform_calculation_components_get_pid(array $components, $form_key) {
     }
   }
 }
+
 /**
  * It buids up an array with the necessary data of the calculation elements.
  *
@@ -245,7 +244,6 @@ function _webform_calculation_components_get_pid(array $components, $form_key) {
  * @param array $components
  *   The array of components in a tree shape taken from the webform node form
  *   array.
- *
  * @param string $wb_calc_component_cid
  *   The cid (Component Id) of the calculation component where the operands,
  *   operation, result fields etc. is stored.
