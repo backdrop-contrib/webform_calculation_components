@@ -65,6 +65,9 @@ Hold Control key to select more than one.
 select field options. Hold Control to key to select more than one.
 - Select the result field, it has to be one of the numeric fields created
 previously.
+- If you want to include the current value of the result field in the
+calculation, set the cumulative result to Yes, (E.g. for quotations) otherwise
+choose No (E.g. for formulas).
 - Configure the rest of options like a normal webform component.
 
 Notes:
