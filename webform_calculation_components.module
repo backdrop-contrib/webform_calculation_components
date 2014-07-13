@@ -137,8 +137,6 @@ function webform_calculation_components_form_alter(&$form, $form_state, $form_id
       }
     }
   }
-  // dpm($form, "form");?
-  // dpm($form_state, "form state");?
 }
 
 /**

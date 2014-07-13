@@ -156,7 +156,7 @@ function _webform_edit_wb_calc_hidden($component) {
  * Element validation callback. Ensure keys are not duplicated.
  */
 function _webform_edit_validate_wb_calc_hidden($element, &$form_state) {
-  // @to-do validate that select field choices coincide with the select field.
+  // @todo validate that select field choices coincide with the select field.
 }
 
 /**
