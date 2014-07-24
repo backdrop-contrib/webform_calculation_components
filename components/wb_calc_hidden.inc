@@ -64,7 +64,7 @@ function _webform_edit_wb_calc_hidden($component) {
     '#type' => 'textarea',
     '#title' => t('Default value'),
     '#default_value' => $component['value'],
-    '#description' => t('The default value of the field.') . ' ' . theme('webform_token_help'),
+    '#description' => t('The default value of the field. ') . theme('webform_token_help'),
     '#cols' => 60,
     '#rows' => 5,
     '#weight' => 0,
@@ -77,7 +77,7 @@ function _webform_edit_wb_calc_hidden($component) {
       'hidden' => t('Hidden element (less secure, changeable via JavaScript)'),
     ),
     '#title' => t('Webform hidden calculation type'),
-    '#description' => t('Both types of webform hidden calculation fields are not shown to end-users. Using a <em>Secure value</em> allows the use of <em>all tokens</em>, even for anonymous users.'),
+    '#description' => t('Both types of webform hidden calculation fields are not shown to end-users. Using a %secure_value allows the use of %all_tokens, even for anonymous users.', array('%secure_value' => 'Secure value', '%all_tokens' => 'All tokens')),
     '#default_value' => $component['extra']['calculation_hidden_type'],
     '#parents' => array('extra', 'calculation_hidden_type'),
   );

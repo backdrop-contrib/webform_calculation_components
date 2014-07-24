@@ -17,34 +17,32 @@
     var operand_id = '#' + response.webformOperationDataArray['operand_id'];
     var operation = response.webformOperationDataArray['operation'];
     var result_id = '#' + response.webformOperationDataArray['result_id'];
+    var operation_result = 0;
     switch(operation) {
       case 'addition':
-      var operation_result = Number($(result_id).val()) + Number($(operand_id).val());
+      operation_result = Number($(result_id).val()) + Number($(operand_id).val());
       break;
 
       case 'subtraction':
-      var operation_result = Number($(result_id).val()) - Number($(operand_id).val());
+      operation_result = Number($(result_id).val()) - Number($(operand_id).val());
       break;
 
       case 'multiplication':
-      var operation_result = Number($(result_id).val()) * Number($(operand_id).val());
+      operation_result = Number($(result_id).val()) * Number($(operand_id).val());
       break;
 
       case 'division':
-      var operation_result = Number($(result_id).val()) / ((Number($(operand_id).val()) == 0)? 1 : Number($(operand_id).val()));
+      operation_result = Number($(result_id).val()) / ((Number($(operand_id).val()) == 0)? 1 : Number($(operand_id).val()));
       break;
 
       case 'percentage':
-      var operation_result = 0.01 * Number($(result_id).val()) * Number($(operand_id).val());
+      operation_result = 0.01 * Number($(result_id).val()) * Number($(operand_id).val());
       break;
 
       case 'modulo':
-      var operation_result = Math.floor(Number($(result_id).val())) % ((Number($(operand_id).val()) == 0)? 1 : Number($(operand_id).val()));
+      operation_result = Math.floor(Number($(result_id).val())) % ((Number($(operand_id).val()) == 0)? 1 : Number($(operand_id).val()));
       break;
     }
-// console.log("operation_id > %o",$(operand_id).val());
-// console.log("operation > %o",$(operation).val());
     $(result_id).val(operation_result);
-// console.log("result_id > %o",$(result_id).val());
   };
 }(jQuery, Drupal));
