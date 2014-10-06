@@ -18,29 +18,41 @@
     var operation = response.webformOperationDataArray['operation'];
     var result_id = '#' + response.webformOperationDataArray['result_id'];
     var operation_result = 0;
+// Reset the variable result field if the input result field is empty.
+    if ($(result_id).val() == '') {
+      if (operation == 'addition' || operation == 'subtraction') {
+        result_id_value = 0;
+      }
+      if (operation == 'multiplication' || operation == 'division' || operation == 'percentage' || operation == 'modulo') {
+        result_id_value = 1;
+      }
+    }
+    else {
+      result_id_value = Number($(result_id).val());
+    }
     switch(operation) {
       case 'addition':
-      operation_result = Number($(result_id).val()) + Number($(operand_id).val());
+      operation_result = result_id_value + Number($(operand_id).val());
       break;
 
       case 'subtraction':
-      operation_result = Number($(result_id).val()) - Number($(operand_id).val());
+      operation_result = result_id_value - Number($(operand_id).val());
       break;
 
       case 'multiplication':
-      operation_result = Number($(result_id).val()) * Number($(operand_id).val());
+      operation_result = result_id_value * Number($(operand_id).val());
       break;
 
       case 'division':
-      operation_result = Number($(result_id).val()) / ((Number($(operand_id).val()) == 0)? 1 : Number($(operand_id).val()));
+      operation_result = result_id_value / ((Number($(operand_id).val()) == 0)? 1 : Number($(operand_id).val()));
       break;
 
       case 'percentage':
-      operation_result = 0.01 * Number($(result_id).val()) * Number($(operand_id).val());
+      operation_result = 0.01 * result_id_value * Number($(operand_id).val());
       break;
 
       case 'modulo':
-      operation_result = Math.floor(Number($(result_id).val())) % ((Number($(operand_id).val()) == 0)? 1 : Number($(operand_id).val()));
+      operation_result = Math.floor(result_id_value) % ((Number($(operand_id).val()) == 0)? 1 : Number($(operand_id).val()));
       break;
     }
     $(result_id).val(operation_result);
