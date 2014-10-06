@@ -56,7 +56,9 @@ function _webform_edit_wb_calc_hidden($component) {
     }
     if ($component_element['type'] == 'select') {
       $available_select_fields[$component_element['form_key']] = $component_element['name'];
-      $available_select_fields_choices[$component_element['form_key']] = _webform_select_options_from_text($component_element['extra']['items'], FALSE);
+      // Option choices does not include the select field name, we need to append it
+      $select_fields_choices_string = str_replace("|"," (" . $component_element['form_key'] . ")|",$component_element['extra']['items']);
+      $available_select_fields_choices[$component_element['form_key']] = _webform_select_options_from_text($select_fields_choices_string, FALSE);
     }
   }
 

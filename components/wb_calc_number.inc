@@ -148,6 +148,7 @@ function _webform_edit_wb_calc_number($component) {
     '#size' => 5,
     '#maxlength' => 3,
     '#parents' => array('extra', 'decimals'),
+    '#element_validate' => array('_webform_edit_decimals_validate'),
   );
   $form['extra']['operation_type'] = array(
     '#type' => 'select',
@@ -174,6 +175,19 @@ function _webform_edit_wb_calc_number($component) {
   );
 
   return $form;
+}
+
+/**
+ * Validation of decimals edit form items.
+ */
+function _webform_edit_decimals_validate($element, &$form_state) {
+  if (!ctype_digit($element['#value'])) {
+    form_error($element, t('Number of decimals has to contain only digits.'));
+  }
+  elseif ((int)$element['#value'] > MAX_DECIMALS) {
+    form_error($element, t('Maximum number of decimals is @max.', array('@max' => MAX_DECIMALS)));
+  }
+  return TRUE;
 }
 
 /**
