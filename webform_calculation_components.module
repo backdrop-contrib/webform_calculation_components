@@ -109,7 +109,7 @@ function webform_calculation_components_form_alter(&$form, $form_state, $form_id
         }
         if (isset($form['submitted'])) {
           // An array of tree paths is created.
-          $select_field_pid = _webform_calculation_components_get_pid($form['#node']->webform['components'], $component['extra']['select_field']);
+          $select_field_pid = _webform_calculation_components_get_pid($form['#node']->webform['components'], $component['extra']['select_field'], "select");
           $wb_hidden_select_field_tree_paths = array();
           // Each tree path belongs to a component. The key indicates which one.
           $wb_hidden_select_field_tree_paths[$component['form_key']] = _webform_calculation_components_build_tree_path($form['#node']->webform['components'], array($component['extra']['select_field']), $select_field_pid);
@@ -220,9 +220,9 @@ function _webform_calculation_components_insert_new_attribute(array &$form_submi
  * @return string
  *   It returns the pid string.
  */
-function _webform_calculation_components_get_pid(array $components, $form_key) {
+function _webform_calculation_components_get_pid(array $components, $form_key, $component_type = "") {
   foreach ($components as $component) {
-    if ($component['form_key'] == $form_key) {
+    if ($component['form_key'] == $form_key && ($component_type == "" || $component_type == $component['type'])) {
       return $component['pid'];
     }
   }
