@@ -128,6 +128,7 @@ function _webform_edit_wb_calc_hidden($component) {
     '#multiple' => TRUE,
     '#description' => t('Choose which values of the select field will enable the calculation. Hold Control key to select more than one.'),
     '#parents' => array('extra', 'select_field_choices'),
+    '#element_validate' => array('webform_calc_hidden_validate_select_field_choices'),
   );
 
   $form['extra']['result_field'] = array(
@@ -155,10 +156,20 @@ function _webform_edit_wb_calc_hidden($component) {
 }
 
 /**
- * Element validation callback. Ensure keys are not duplicated.
+ * Element validation callback. Ensure options belong to select field.
  */
-function _webform_edit_validate_wb_calc_hidden($element, &$form_state) {
-  // @todo validate that select field choices coincide with the select field.
+function webform_calc_hidden_validate_select_field_choices($element, &$form_state) {
+  if (isset($form_state['values']['extra']['select_field'])) {
+    foreach($element['#value'] as $select_option) {
+      // Extract the select field name of the selected option.
+      $pos_opening_brace = strrpos($select_option, "(")+1;
+      $select_form_key_length = (strrpos($select_option, ")") - $pos_opening_brace);
+      $select_form_key = substr($select_option, $pos_opening_brace, $select_form_key_length);
+      if ($form_state['values']['extra']['select_field'] != $select_form_key) {
+        form_error($element, t('%name field value does not belong to the select field @select.', array('%name' => $element['#title'], '@select' => $form_state['values']['extra']['select_field'])));
+      }
+    }
+  }
 }
 
 /**
