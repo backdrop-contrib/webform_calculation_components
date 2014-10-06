@@ -363,7 +363,12 @@ function webform_calculation_components_hidden_ajax_callback($form, $form_state)
       $select_field_choices = array();
       foreach ($form_state['complete form']['#node']->webform['components'] as $component) {
         if (isset($component['extra']['select_field']) && $component['extra']['select_field'] == $triggering_comp_form_key) {
-          $select_field_choices = $component['extra']['select_field_choices'];
+          if (isset($component['extra']['select_field_choices'])) {
+          /* (select_field) strings are removed from every element of the
+          select_field_choices array. So after that only the choices are passed
+            */
+            $select_field_choices = str_replace(" (" . $component['extra']['select_field'] . ")", "", $component['extra']['select_field_choices']);
+          }
           break;
         }
       }
