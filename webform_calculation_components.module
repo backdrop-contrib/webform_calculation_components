@@ -216,6 +216,10 @@ function _webform_calculation_components_insert_new_attribute(array &$form_submi
  *   array.
  * @param string $form_key
  *   The form key string to get the cid (Component Id), and then the pid.
+ * @param string $component_type
+ *   Due to webform allows that a fieldset and another component shares the
+ *   same form_key. Sometimes we have to check the component type string.
+ *   That is why this value is optional.
  *
  * @return string
  *   It returns the pid string.
