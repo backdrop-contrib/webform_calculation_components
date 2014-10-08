@@ -247,7 +247,7 @@ function _webform_render_wb_calc_number($component, $value = NULL, $filter = TRU
   }
 
   if (($component['extra']['decimals'] > 0) && ($component['extra']['decimals'] < MAX_DECIMALS)) {
-    $element['#element_validate'] = array('_webform_edit_validate_wb_calc_number');
+    $element['#element_validate'][] = '_webform_edit_validate_wb_calc_number';
   }
   if ($component['extra']['operation_type'] == 'value') {
     $element['#value'] = $element['#default_value'];

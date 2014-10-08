@@ -76,7 +76,9 @@ Notes:
 
 Dependencies
 ************
-- webform
+- webform (>=7.x-4.x)
+
+Note: due to incompatibilities between webform 7.x-4.x API and previous versions API, this module requires webform version 4.0 or above.
 
 Installation
 ************

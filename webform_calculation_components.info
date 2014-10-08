@@ -2,3 +2,4 @@ name = Webform Calculation Components
 description = Provides new components fields to perform basic arithmetic operations.
 core = "7.x"
 dependencies[] = webform (>=7.x-4.x)
+files[] = "WebformCalculationComponentsFormTree.php"
