@@ -110,7 +110,7 @@ function webform_calculation_components_form_alter(&$form, $form_state, $form_id
         }
         if (isset($form['submitted'])) {
           // An array of tree paths is created.
-          $select_field_pid = $formTreeCalcObject->getPid($form['#node']->webform['components'], $component['extra']['select_field'], "select");
+          $select_field_pid = $formTreeCalcObject->getPid($form['#node']->webform['components'], $component['extra']['select_field']);
           $wb_hidden_select_field_tree_paths = array();
           // Each tree path belongs to a component. The key indicates which one.
           $wb_hidden_select_field_tree_paths[$component['form_key']] = $formTreeCalcObject->buildTreePath($form['#node']->webform['components'], array($component['extra']['select_field']), $select_field_pid);

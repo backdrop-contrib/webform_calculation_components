@@ -82,7 +82,7 @@ class WebformCalculationComponentsFormTree {
     return TRUE;
   }
 
-  /**
+ /**
    * Gets the pid (Parent Id) of the calculation component.
    *
    * @param array $components
@@ -90,19 +90,21 @@ class WebformCalculationComponentsFormTree {
    *   array.
    * @param string $form_key
    *   The form key string to get the cid (Component Id), and then the pid.
-   * @param string $component_type
-   *   Due to webform allows that a fieldset and another component shares the
-   *   same form_key. Sometimes we have to check the component type string.
-   *   That is why this value is optional.
+   * @param boolean $include_fieldset
+   *   Because webform allows that a fieldset and another component shares the
+   *   same form_key, most of the times we have to check that the component type
+   *   is not a fieldset, that is why this parameter is set to false by default.
    *
    * @return string
    *   It returns the pid string.
    */
-  function getPid(array $components, $form_key, $component_type = "") {
+  function getPid(array $components, $form_key, $include_fieldset = FALSE) {
     foreach ($components as $component) {
-      if ($component['form_key'] == $form_key &&
-        ($component_type == "" || $component_type == $component['type'])) {
-        return $component['pid'];
+      if ($component['form_key'] == $form_key) {
+        if (($include_fieldset == FALSE && $component['type'] != 'fieldset') ||
+          ($include_fieldset == TRUE)) {
+          return $component['pid'];
+        }
       }
     }
   }
