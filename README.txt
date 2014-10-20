@@ -56,18 +56,20 @@ Go to add content > webform:
 - Create new webform components, you need at least two numeric and a select
 component.
 - Create a new Calculation - hidden component.
-- Select the operand field. It has to be one or more of the numeric fields
-created previously.
-Hold Control key to select more than one.
+- Select the first operand field. It has to be one or more of the numeric fields
+created previously. Hold Control key to select more than one.
+- Select the second operand field (optional). For non commutative operations
+like subtraction, division and modulo the second operand has to be in the
+second operand field. It can be one or more of the numeric fields created
+previously. Hold Control key to select more than one. If you want to include
+the current value of the result field in the calculation, include it in the
+second operand field, that way it will be cumulative.
 - Select the arithmetic operation and the result field.
 - Select the select field (created previously).
 - Select the select field choices. The choices must coincide with the chosen
 select field options. Hold Control to key to select more than one.
 - Select the result field, it has to be one of the numeric fields created
 previously.
-- If you want to include the current value of the result field in the
-calculation, set the cumulative result to Yes, (E.g. for quotations) otherwise
-choose No (E.g. for formulas).
 - Configure the rest of options like a normal webform component.
 
 Notes:

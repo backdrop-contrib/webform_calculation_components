@@ -82,7 +82,7 @@ class WebformCalculationComponentsFormTree {
     return TRUE;
   }
 
- /**
+  /**
    * Gets the pid (Parent Id) of the calculation component.
    *
    * @param array $components
@@ -138,12 +138,14 @@ class WebformCalculationComponentsFormTree {
       $calc_op_comp['operand_field_path'] = $this->buildTreePath($components, array($components[$wb_calc_component_cid]['form_key']), $components[$wb_calc_component_cid]['pid']);
     }
     if ($components[$wb_calc_component_cid]['type'] == 'wb_calc_hidden') {
-      foreach ($components[$wb_calc_component_cid]['extra']['operand_field'] as $operand_field) {
-        $calc_op_comp['operand_field_paths'][] = $this->buildTreePath($components, array($operand_field), $this->getPid($components, $operand_field));
+      foreach ($components[$wb_calc_component_cid]['extra']['first_operand'] as $first_operand) {
+        $calc_op_comp['first_operand_paths'][] = $this->buildTreePath($components, array($first_operand), $this->getPid($components, $first_operand));
       }
-      $select_field_pid = $this->getPid($components, $components[$wb_calc_component_cid]['extra']['select_field']);
+      foreach ($components[$wb_calc_component_cid]['extra']['second_operand'] as $second_operand) {
+        $calc_op_comp['second_operand_paths'][] = $this->buildTreePath($components, array($second_operand), $this->getPid($components, $second_operand));
+      }
+      $select_field_pid = $this->getPid($components, $components[$wb_calc_component_cid]['extra']['select_field'], 'select');
       $calc_op_comp['select_field_path'] = $this->buildTreePath($components, array($components[$wb_calc_component_cid]['extra']['select_field']), $select_field_pid);
-      $calc_op_comp['cumulative_result'] = $components[$wb_calc_component_cid]['extra']['cumulative_result'];
     }
     $calc_op_comp['operation_type'] = $components[$wb_calc_component_cid]['extra']['operation_type'];
     $result_field_pid = $this->getPid($components, $components[$wb_calc_component_cid]['extra']['result_field']);

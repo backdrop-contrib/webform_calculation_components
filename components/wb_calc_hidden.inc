@@ -18,12 +18,12 @@ function _webform_defaults_wb_calc_hidden() {
       'private' => FALSE,
       'calculation_hidden_type' => 'value',
       'analysis' => FALSE,
-      'operand_field' => '',
+      'first_operand' => '',
+      'second_operand' => '',
       'operation_type' => '',
       'select_field' => '',
       'select_field_choices' => '',
       'result_field' => '',
-      'cumulative_result' => '',
       'attributes' => array(),
     ),
   );
@@ -84,15 +84,26 @@ function _webform_edit_wb_calc_hidden($component) {
     '#parents' => array('extra', 'calculation_hidden_type'),
   );
 
-  $form['extra']['operand_field'] = array(
+    $form['extra']['first_operand'] = array(
     '#type' => 'select',
-    '#default_value' => $component['extra']['operand_field'],
-    '#title' => t('Operand field'),
+    '#default_value' => $component['extra']['first_operand'],
+    '#title' => t('First operand'),
     '#multiple' => TRUE,
     '#size' => 2,
     '#options' => $available_numeric_fields,
-    '#description' => t('Select the numeric component or components as operand fields. Hold Control key to select more than one.'),
-    '#parents' => array('extra', 'operand_field'),
+    '#description' => t('Select the numeric component or components as the first operand fields. Hold Control key to select more than one.'),
+    '#parents' => array('extra', 'first_operand'),
+  );
+
+  $form['extra']['second_operand'] = array(
+    '#type' => 'select',
+    '#default_value' => $component['extra']['second_operand'],
+    '#title' => t('Second operand'),
+    '#multiple' => TRUE,
+    '#size' => 2,
+    '#options' => $available_numeric_fields,
+    '#description' => t('Select the numeric component or components as second operand fields. Hold Control key to select more than one. Include the result field here to make it cumulative.'),
+    '#parents' => array('extra', 'second_operand'),
   );
 
   $form['extra']['operation_type'] = array(
@@ -139,19 +150,6 @@ function _webform_edit_wb_calc_hidden($component) {
     '#description' => t('Select the numeric component as the result field or target of the operation.'),
     '#parents' => array('extra', 'result_field'),
   );
-
-  $form['extra']['cumulative_result'] = array(
-    '#type' => 'select',
-    '#title' => t('Cumulative result'),
-    '#default_value' => $component['extra']['cumulative_result'],
-    '#options' => array(
-      'yes' => t('Yes'),
-      'no' => t('No'),
-    ),
-    '#description' => t('Whether the current value of the result field is included in the calculation or not.'),
-    '#parents' => array('extra', 'cumulative_result'),
-  );
-
   return $form;
 }
 
@@ -205,7 +203,12 @@ function _webform_render_wb_calc_hidden($component, $value = NULL, $filter = TRU
     $element['#wrapper_attributes']['style'] = array('display: none');
   }
 
-  if ($component['extra']['operand_field'] == 'value') {
+  if ($component['extra']['first_operand'] == 'value') {
+    $element['#type'] = 'value';
+    $element['#value'] = $default_value;
+  }
+
+  if ($component['extra']['second_operand'] == 'value') {
     $element['#type'] = 'value';
     $element['#value'] = $default_value;
   }
@@ -229,12 +232,6 @@ function _webform_render_wb_calc_hidden($component, $value = NULL, $filter = TRU
     $element['#type'] = 'value';
     $element['#value'] = $default_value;
   }
-
-  if ($component['extra']['cumulative_result'] == 'value') {
-    $element['#type'] = 'value';
-    $element['#value'] = $default_value;
-  }
-
   return $element;
 }
 
