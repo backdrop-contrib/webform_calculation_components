@@ -1,14 +1,12 @@
-Webform Calculation Components
-******************************
+# Webform Calculation Components
 
 This module provides AJAX functionality to perform basic arithmetic operations
 on webform components.
 
-With this module the user can have calculated fields, e.g. the total amount,
-calculated percentage etc.
-This module provides two new component types:
+With this module the user can have calculated fields (e.g. the total amount,
+calculated percentage etc.) This module provides two new component types:
 
-Webform Calculation Number (Calculation - number)
+ - **Webform Calculation Number** (Calculation - number)
 
 That component is a numeric field where the user can type a number. The target
 field (result field) is set when configuring the Webform Calculation Number
@@ -16,11 +14,12 @@ component.
 When the webform is displayed, the user can enter numbers in these fields and
 the calculation is performed against the result field.
 
-Webform Calculation Hidden (Calculation - hidden)
+ - **Webform Calculation Hidden** (Calculation - hidden)
 
 It can be used to perform operations with existing numeric components.
 The calculation is triggered when the user select a specific option in
 checkboxes, radio button or select option.
+
 All that is configured when creating the Webform calculation hidden component.
 It is possible to perform one operation e.g. Addition to several numeric
 fields, then the result will be calculated against the result number component.
@@ -29,14 +28,20 @@ and they have to correspond to the select field that triggers the calculation.
 
 The available operations are the following:
 
-[addition]
-[subtraction]
-[multiplication]
-[division]
-[percentage]
-[modulo]
+ - addition
+ - subtraction
+ - multiplication
+ - division
+ - percentage
+ - modulo
 
-Configuration:
+
+## Installation
+
+- Install this module using the official 
+  [Backdrop CMS instructions](https://backdropcms.org/guide/modules)
+
+## Configuration:
 
 For Webform Calculation Number
 
@@ -76,15 +81,28 @@ Notes:
 - Division by zero is prevented internally.
 - Nested webform components in fieldset are supported.
 
-Dependencies
-************
-- webform (>=7.x-4.x)
+## Dependencies
 
-Note: due to incompatibilities between webform 7.x-4.x API and previous versions API, this module requires webform version 4.0 or above.
+- Webform 
 
-Installation
-************
+## Issues
 
-1. Install as usual[1].
-2. Create a webform node and create de corresponding fields (see above) in:
-   node/%node/webform
+Bugs and Feature requests should be reported in the 
+[Issue Queue](https://github.com/backdrop-contrib/webform_calculation_components/issues)
+
+## Current Maintainers
+
+- [Laryn Kragt Bakker](https://github.com/laryn) - [CEDC.org](https://cedc.org)
+- Collaboration and co-maintainers welcome!
+
+## Credits
+
+- Ported to Backdrop CMS by [Laryn Kragt Bakker](https://github.com/laryn) - 
+  [CEDC.org](https://cedc.org).
+- Maintained for Drupal 7 by 
+  [Anthony Goode](https://www.drupal.org/u/anthony-goode).
+
+## License
+
+This project is GPL v2 software. See the LICENSE.txt file in this directory
+for complete text.
