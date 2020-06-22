@@ -57,7 +57,7 @@ function _webform_edit_wb_calc_hidden($component) {
     if ($component_element['type'] == 'select') {
       $available_select_fields[$component_element['form_key']] = $component_element['name'];
       // Option choices does not include the select field name, we need to append it
-      $select_fields_choices_string = str_replace("|"," (" . $component_element['form_key'] . ")|",$component_element['extra']['items']);
+      $select_fields_choices_string = str_replace("|", " (" . $component_element['form_key'] . ")|", $component_element['extra']['items']);
       $available_select_fields_choices[$component_element['form_key']] = _webform_select_options_from_text($select_fields_choices_string, FALSE);
     }
   }
@@ -84,7 +84,7 @@ function _webform_edit_wb_calc_hidden($component) {
     '#parents' => array('extra', 'calculation_hidden_type'),
   );
 
-    $form['extra']['first_operand'] = array(
+  $form['extra']['first_operand'] = array(
     '#type' => 'select',
     '#default_value' => $component['extra']['first_operand'],
     '#title' => t('First operand'),
@@ -158,9 +158,9 @@ function _webform_edit_wb_calc_hidden($component) {
  */
 function webform_calc_hidden_validate_select_field_choices($element, &$form_state) {
   if (isset($form_state['values']['extra']['select_field'])) {
-    foreach($element['#value'] as $select_option) {
+    foreach ($element['#value'] as $select_option) {
       // Extract the select field name of the selected option.
-      $pos_opening_brace = strrpos($select_option, "(")+1;
+      $pos_opening_brace = strrpos($select_option, "(") + 1;
       $select_form_key_length = (strrpos($select_option, ")") - $pos_opening_brace);
       $select_form_key = substr($select_option, $pos_opening_brace, $select_form_key_length);
       if ($form_state['values']['extra']['select_field'] != $select_form_key) {
@@ -256,6 +256,7 @@ function _webform_display_wb_calc_hidden($component, $value, $format = 'html') {
  * Theme function to render an wb_calc_hidden component.
  */
 function theme_webform_display_wb_calc_hidden($variables) {
+  // TODO: Should this theme webform_display_wb_calc_hidden be declared in hook_theme()?
   $element = $variables['element'];
 
   return $element['#format'] == 'html' ? check_plain($element['#markup']) : $element['#markup'];
@@ -290,7 +291,9 @@ function _webform_analysis_wb_calc_hidden($component, $sids = array()) {
   $rows[0] = array(t('Empty'), ($submissions - $nonblanks));
   $rows[1] = array(t('Non-empty'), $nonblanks);
   $other[0] = array(
-    t('Average submission length in words (ex blanks)'), ($nonblanks != 0 ? number_format($wordcount / $nonblanks, 2) : '0'));
+    t('Average submission length in words (ex blanks)'),
+    ($nonblanks != 0 ? number_format($wordcount / $nonblanks, 2) : '0'),
+  );
 
   return array(
     'table_rows' => $rows,

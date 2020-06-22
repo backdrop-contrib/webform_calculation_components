@@ -46,7 +46,7 @@ function _webform_theme_wb_calc_number() {
   return array(
     'webform_display_wb_calc_number' => array(
       'render element' => 'element',
-  // 'file' => '/components/wb_calc_number.inc',
+      // 'file' => '/components/wb_calc_number.inc',
     ),
   );
 }
@@ -184,7 +184,7 @@ function _webform_edit_decimals_validate($element, &$form_state) {
   if (!ctype_digit($element['#value'])) {
     form_error($element, t('Number of decimals has to contain only digits.'));
   }
-  elseif ((int)$element['#value'] > MAX_DECIMALS) {
+  elseif ((int) $element['#value'] > MAX_DECIMALS) {
     form_error($element, t('Maximum number of decimals is @max.', array('@max' => MAX_DECIMALS)));
   }
   return TRUE;
@@ -311,6 +311,7 @@ function _webform_display_wb_calc_number($component, $value, $format = 'html') {
  * Format the output of data for this component.
  */
 function theme_webform_display_wb_calc_number($variables) {
+  // TODO: Should this theme webform_display_wb_calc_number be declared in hook_theme()?
   $element = $variables['element'];
   $prefix = $element['#format'] == 'html' ? '' : $element['#field_prefix'];
   $suffix = $element['#format'] == 'html' ? '' : $element['#field_suffix'];
@@ -337,7 +338,7 @@ function _webform_analysis_wb_calc_number($component, $sids = array()) {
 
   $result = $query->execute();
   foreach ($result as $data) {
-    if (drupal_strlen(trim($data['data'])) > 0) {
+    if (backdrop_strlen(trim($data['data'])) > 0) {
       $nonblanks++;
       $wordcount += str_word_count(trim($data['data']));
     }
@@ -349,7 +350,8 @@ function _webform_analysis_wb_calc_number($component, $sids = array()) {
 
   $other[] = array(
     t('Average submission length in words (ex blanks)'),
-    ($nonblanks != 0 ? number_format($wordcount / $nonblanks, 2) : '0'));
+    ($nonblanks != 0 ? number_format($wordcount / $nonblanks, 2) : '0'),
+  );
 
   return array(
     'table_rows' => $rows,

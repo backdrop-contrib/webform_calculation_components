@@ -4,9 +4,9 @@
  * Provides functions and callbacks that allow calculations in webforms.
  */
 
- /**
-  * Implements hook_webform_component_info().
-  */
+/**
+ * Implements hook_webform_component_info().
+ */
 function webform_calculation_components_webform_component_info() {
   $components = array();
   $components['wb_calc_number'] = array(
@@ -68,7 +68,7 @@ function webform_calculation_components_form_alter(&$form, $form_state, $form_id
       $formTreeCalcObject = new WebformCalculationComponentsFormTree();
       if ($component['type'] == 'wb_calc_number') {
         if (isset($form['#attached']['js'])) {
-          $webform_calc_number_js = drupal_get_path('module', 'webform_calculation_components') . '/js/webform_calc_number_component.js';
+          $webform_calc_number_js = backdrop_get_path('module', 'webform_calculation_components') . '/js/webform_calc_number_component.js';
           if (!in_array($webform_calc_number_js, $form['#attached']['js'])) {
             $form['#attached']['js'][] = $webform_calc_number_js;
           }
@@ -103,7 +103,7 @@ function webform_calculation_components_form_alter(&$form, $form_state, $form_id
       // Check if it has a calculation hidden component.
       if ($component['type'] == 'wb_calc_hidden') {
         if (isset($form['#attached']['js'])) {
-          $webform_calc_hidden_js = drupal_get_path('module', 'webform_calculation_components') . '/js/webform_calc_hidden_component.js';
+          $webform_calc_hidden_js = backdrop_get_path('module', 'webform_calculation_components') . '/js/webform_calc_hidden_component.js';
           if (!in_array($webform_calc_hidden_js, $form['#attached']['js'])) {
             $form['#attached']['js'][] = $webform_calc_hidden_js;
           }
@@ -187,9 +187,8 @@ function webform_calculation_components_number_ajax_callback($form, $form_state)
     // The command will be used in our JavaScript file (see next section).
     'command' => 'webformCalcNumberComponentAjaxCallback',
     /* We pass the value that the user selected in the select element to our
-     * JavaScript function.
-     */
-
+ * JavaScript function.
+ */
     'webformOperationDataArray' => $operation_data,
   );
 
@@ -228,16 +227,16 @@ function webform_calculation_components_hidden_ajax_callback($form, $form_state)
       }
     }
     /* Check if the select field (triggering component) is set to a selected
-    * choice. E.g. yes.
-    */
+     * choice. E.g. yes.
+     */
     if (isset($form_state['complete form']['#node']->webform['components']) && isset($form_state['triggering_element']['#value'])) {
       $select_field_choices = array();
       foreach ($form_state['complete form']['#node']->webform['components'] as $component) {
         if (isset($component['extra']['select_field']) && $component['extra']['select_field'] == $triggering_comp_form_key) {
           if (isset($component['extra']['select_field_choices'])) {
-          /* (select_field) strings are removed from every element of the
-          select_field_choices array. So after that only the choices are passed
-            */
+            /* (select_field) strings are removed from every element of the
+             select_field_choices array. So after that only the choices are passed
+             */
             $select_field_choices = str_replace(" (" . $component['extra']['select_field'] . ")", "", $component['extra']['select_field_choices']);
           }
           break;
@@ -282,11 +281,20 @@ function webform_calculation_components_hidden_ajax_callback($form, $form_state)
     // The command will be used in our JavaScript file (see next section).
     'command' => 'webformCalcHiddenComponentAjaxCallback',
     /* We pass the value that the user selected in the select element to our
-     * JavaScript function.
-     */
+ * JavaScript function.
+ */
     'webformOperationDataArray' => $operation_data,
   );
 
   // And finally, we will return all our commands to the system to be executed.
   return array('#type' => 'ajax', '#commands' => $commands);
+}
+
+/**
+ * Implements hook_autoload_info().
+ */
+function webform_calculation_components_autoload_info() {
+  return array(
+    'WebformCalculationComponentsFormTree' => 'WebformCalculationComponentsFormTree.php',
+  );
 }

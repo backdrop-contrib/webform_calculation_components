@@ -1,4 +1,4 @@
-(function($, Drupal)
+(function($, Backdrop)
 /**
  * @file
  * JavaScript behaviors for the calculation of selected webform component numbers.
@@ -75,8 +75,8 @@
     }
   }
 
-// Our function name is prototyped as part of the Drupal.ajax namespace, adding to the commands:
-  Drupal.ajax.prototype.commands.webformCalcHiddenComponentAjaxCallback = function(ajax, response, status) {
+// Our function name is prototyped as part of the Backdrop.ajax namespace, adding to the commands:
+  Backdrop.ajax.prototype.commands.webformCalcHiddenComponentAjaxCallback = function(ajax, response, status) {
 // The value we passed in our Ajax callback function will be available inside
 // the response object. Since we defined it as selectedValue in our callback,
 // it will be available in response.selectedValue. Usually we would not use
@@ -129,4 +129,4 @@
     }
     console.log("response.webformOperationDataArray > %o",response.webformOperationDataArray);
   };
-}(jQuery, Drupal));
+}(jQuery, Backdrop));
