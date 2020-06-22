@@ -92,8 +92,7 @@ Bugs and Feature requests should be reported in the
 
 ## Current Maintainers
 
-- [Laryn Kragt Bakker](https://github.com/laryn) - [CEDC.org](https://cedc.org)
-- Collaboration and co-maintainers welcome!
+- Seeking maintainer.
 
 ## Credits
 
