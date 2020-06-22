@@ -45,6 +45,7 @@ function _webform_theme_wb_calc_hidden() {
  * Implements _webform_edit_component().
  */
 function _webform_edit_wb_calc_hidden($component) {
+  module_load_include('inc', 'webform', 'components/select');
   $form = array();
   $webformnode = node_load($component['nid']);
   $available_numeric_fields = array();

@@ -2,4 +2,4 @@ name = Webform Calculation Components
 description = Provides new components fields to perform basic arithmetic operations.
 backdrop = 1.x
 type = module
-dependencies[] = webform (>=7.x-4.x)
+dependencies[] = webform
